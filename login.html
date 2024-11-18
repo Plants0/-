@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        /* نفس إعدادات CSS الخاصة بـ register.html */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        section {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p, a {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            section {
+                padding: 15px;
+            }
+            button {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>مرحبًا بك في تطبيق تسجيل الدخول</h1>
+
+    <!-- صفحة تسجيل الدخول -->
+    <section id="loginSection">
+        <h2>تسجيل الدخول</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="اسم المستخدم" required>
+            <input type="password" id="loginPassword" placeholder="كلمة المرور" required>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+        <p>ليس لديك حساب؟ <a href="index.html">إنشاء حساب</a></p>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgFMBaHAtGa0B5nLrBq2maqVv6n3ko7gA",
+            authDomain: "loginapp-7287b.firebaseapp.com",
+            projectId: "loginapp-7287b",
+            storageBucket: "loginapp-7287b.firebasestorage.app",
+            messagingSenderId: "19204068339",
+            appId: "1:19204068339:web:1e4ad949c228b8ac533886",
+            measurementId: "G-RNDMFVR1TE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const email = `${username}@example.com`;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert('تم تسجيل الدخول بنجاح!');
+                    window.location.href = "welcome.html";  // الانتقال إلى صفحة الترحيب
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+    </script>
+
+</body>
+</html>

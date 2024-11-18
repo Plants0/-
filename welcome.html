@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 50px;
+        }
+
+        section {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>مرحبًا بك في تطبيق تسجيل الدخول</h1>
+
+    <section>
+        <h2>أهلاً وسهلاً بك في صفحتك الشخصية</h2>
+        <p>تم تسجيل دخولك بنجاح! اختر من الخيارات أدناه:</p>
+
+        <div class="buttons-container">
+            <button onclick="location.href='login.html'">تسجيل الخروج</button>
+            <button onclick="location.href='index.html'">إنشاء حساب</button>
+        </div>
+    </section>
+
+    <script>
+        // يمكنك إضافة إجراءات لتسجيل الخروج هنا باستخدام Firebase أو أي آلية تستخدمها لإدارة الجلسات
+        const logoutButton = document.querySelector("button:first-child");
+        logoutButton.addEventListener("click", function() {
+            // مثال باستخدام Firebase لتسجيل الخروج
+            const { getAuth, signOut } = import("https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js");
+            const auth = getAuth();
+            signOut(auth).then(() => {
+                alert("تم تسجيل الخروج بنجاح!");
+                window.location.href = "login.html"; // العودة إلى صفحة تسجيل الدخول بعد تسجيل الخروج
+            }).catch((error) => {
+                alert("حدث خطأ أثناء تسجيل الخروج: " + error.message);
+            });
+        });
+    </script>
+
+</body>
+</html>
