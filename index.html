@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب</title>
+    <style>
+        /* إعدادات أساسية */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        section {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p, a {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        /* استجابة للأجهزة الصغيرة */
+        @media (max-width: 600px) {
+            section {
+                padding: 15px;
+            }
+            button {
+                font-size: 16px;
+            }
+        }
+
+        /* رسالة الخطأ */
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>مرحبًا بك في تطبيق تسجيل الدخول</h1>
+
+    <!-- صفحة إنشاء الحساب -->
+    <section id="registerSection">
+        <h2>إنشاء حساب</h2>
+        <form id="registerForm">
+            <input type="text" id="regUsername" placeholder="اسم المستخدم" required>
+            <input type="password" id="regPassword" placeholder="كلمة المرور" required>
+            <button type="submit">إنشاء الحساب</button>
+        </form>
+        <p>لديك حساب؟ <a href="login.html">تسجيل الدخول</a></p>
+        <p class="error" id="errorMessage"></p> <!-- رسالة الخطأ هنا -->
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBgFMBaHAtGa0B5nLrBq2maqVv6n3ko7gA",
+            authDomain: "loginapp-7287b.firebaseapp.com",
+            projectId: "loginapp-7287b",
+            storageBucket: "loginapp-7287b.firebasestorage.app",
+            messagingSenderId: "19204068339",
+            appId: "1:19204068339:web:1e4ad949c228b8ac533886",
+            measurementId: "G-RNDMFVR1TE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        const registerForm = document.getElementById('registerForm');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const email = `${username}@example.com`;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert('تم إنشاء الحساب بنجاح!');
+                    window.location.href = "login.html";  // الانتقال إلى صفحة تسجيل الدخول
+                })
+                .catch((error) => {
+                    let errorMsg = "";
+                    switch(error.code) {
+                        case 'auth/invalid-email':
+                            errorMsg = "البريد الإلكتروني غير صالح. من فضلك تحقق من البريد.";
+                            break;
+                        case 'auth/email-already-in-use':
+                            errorMsg = "البريد الإلكتروني هذا مُستخدم بالفعل. من فضلك استخدم بريدًا آخر.";
+                            break;
+                        case 'auth/weak-password':
+                            errorMsg = "كلمة المرور ضعيفة. يجب أن تكون أطول من 6 أحرف.";
+                            break;
+                        default:
+                            errorMsg = "حدث خطأ غير معروف. يرجى المحاولة مرة أخرى.";
+                            break;
+                    }
+                    errorMessage.textContent = errorMsg; // عرض رسالة الخطأ للمستخدم
+                });
+        });
+    </script>
+
+</body>
+</html>
